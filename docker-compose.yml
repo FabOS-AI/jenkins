@@ -1,0 +1,6 @@
+---
+version: "3"
+services:
+  molecule:
+    image: fabos4ai/jenkins:jdk17
+    build: .
