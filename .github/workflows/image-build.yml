@@ -6,12 +6,14 @@ on:
     branches: [main]
 
 jobs:
-  build-and-push-molecule:
+  build-and-push-jenkins:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./jenkins
     steps:
       - uses: actions/checkout@v3
       - name: Build molecule image
-        working-directory: .
+        working-directory: ${{working-directory}}
         run: docker-compose build molecule
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -19,5 +21,22 @@ jobs:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME  }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD  }}
       - name: Push docker image
-        working-directory: .
+        working-directory: ${{working-directory}}
+        run: docker-compose push
+  build-and-push-inbound-agent:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./inbound-agent
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build molecule image
+        working-directory: ${{working-directory}}
+        run: docker-compose build molecule
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME  }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD  }}
+      - name: Push docker image
+        working-directory: ${{working-directory}}
         run: docker-compose push
