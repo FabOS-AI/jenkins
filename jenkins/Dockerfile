@@ -4,7 +4,7 @@ USER root
 
 # Install Openstack Client
 RUN apt update && \
-    apt install -y python3-dev python3-pip
+    apt install -y python3-dev python3-pip jq
 RUN pip3 install --break-system-packages --upgrade pip
 RUN pip3 install --break-system-packages python-openstackclient
 
